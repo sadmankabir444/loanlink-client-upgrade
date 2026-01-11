@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { Navigate, useLocation, Outlet } from "react-router-dom";
+import { motion } from "framer-motion";
 import { AuthContext } from "../providers/AuthProvider";
 
 const PrivateRoute = ({ children, allowedRoles }) => {
@@ -9,9 +10,17 @@ const PrivateRoute = ({ children, allowedRoles }) => {
   // 🔄 auth loading
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <span className="loading loading-spinner loading-lg"></span>
-      </div>
+      <motion.div 
+        className="min-h-screen flex items-center justify-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
+        <motion.span 
+          className="loading loading-spinner loading-lg"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+        />
+      </motion.div>
     );
   }
 

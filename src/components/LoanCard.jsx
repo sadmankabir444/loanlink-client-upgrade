@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const LoanCard = ({ loan }) => {
   const {
@@ -12,7 +13,13 @@ const LoanCard = ({ loan }) => {
   } = loan;
 
   return (
-    <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition">
+    <motion.div 
+      className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      whileHover={{ y: -5 }}
+    >
       <figure>
         <img src={image} alt={title} className="h-48 w-full object-cover" />
       </figure>
@@ -24,7 +31,7 @@ const LoanCard = ({ loan }) => {
         <div className="text-sm mt-2 space-y-1">
           <p><strong>Category:</strong> {category}</p>
           <p><strong>Interest:</strong> {interest}%</p>
-          <p><strong>Max Limit:</strong> ৳{maxAmount}</p>
+          <p><strong>Max Limit:</strong> ${maxAmount}</p>
         </div>
 
         <div className="card-actions justify-end mt-4">
@@ -33,7 +40,7 @@ const LoanCard = ({ loan }) => {
           </Link>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

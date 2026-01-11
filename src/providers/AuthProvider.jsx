@@ -30,7 +30,7 @@ const AuthProvider = ({ children }) => {
 
       // Save user to backend with name, email, role
       try {
-        await axios.post("https://loanlink-server-seven.vercel.app/users", {
+        await axios.post("http://localhost:3000/users", {
           name,       // <-- important: save name
           email,
           role: "borrower",
@@ -54,7 +54,7 @@ const AuthProvider = ({ children }) => {
       
       try {
         const res = await axios.post(
-  "https://loanlink-server-seven.vercel.app/login",
+  "http://localhost:3000/login",
   { email, password },
   { withCredentials: true }
 );
@@ -83,7 +83,7 @@ if (res.data?.token) {
 
       // Save Google user to backend
       try {
-        await axios.post("https://loanlink-server-seven.vercel.app/users", {
+        await axios.post("http://localhost:3000/users", {
           name: gUser.displayName,
           email: gUser.email,
           photo: gUser.photoURL,
@@ -119,7 +119,7 @@ if (res.data?.token) {
       if (currentUser) {
         try {
           const res = await axios.get(
-            `https://loanlink-server-seven.vercel.app/users/${currentUser.email}`
+            `http://localhost:3000/users/${currentUser.email}`
           );
           setUser({ ...currentUser, role: res.data?.role || "borrower" });
         } catch (err) {

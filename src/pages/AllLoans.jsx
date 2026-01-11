@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import LoanCard from "../components/LoanCard";
+import SkeletonLoader from "../components/SkeletonLoader";
 
 const AllLoans = () => {
   const [loans, setLoans] = useState([]);
@@ -9,7 +11,7 @@ const AllLoans = () => {
   useEffect(() => {
     const fetchLoans = async () => {
       try {
-        const res = await fetch("https://loanlink-server-seven.vercel.app/loans");
+        const res = await fetch("http://localhost:3000/loans");
         if (!res.ok) {
           throw new Error("Failed to fetch loans");
         }
@@ -28,36 +30,71 @@ const AllLoans = () => {
 
   if (loading) {
     return (
-      <div className="text-center mt-20 text-lg font-medium">
-        Loading loans...
+      <div className="max-w-7xl mx-auto px-4 py-16">
+        <motion.h2 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-3xl font-bold mb-10 text-center"
+        >
+          Available Loan Packages
+        </motion.h2>
+        <SkeletonLoader count={6} />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="text-center mt-20 text-red-500 font-medium">
-        {error}
+      <div className="max-w-7xl mx-auto px-4 py-16">
+        <motion.h2 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-3xl font-bold mb-10 text-center"
+        >
+          Available Loan Packages
+        </motion.h2>
+        <div className="text-center mt-20 text-red-500 font-medium">
+          {error}
+        </div>
       </div>
     );
   }
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-16">
-      <h2 className="text-3xl font-bold mb-10 text-center">
+      <motion.h2 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-3xl font-bold mb-10 text-center"
+      >
         Available Loan Packages
-      </h2>
+      </motion.h2>
 
       {loans.length === 0 ? (
-        <p className="text-center text-gray-500">
-          No loans available at the moment.
-        </p>
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-center text-gray-500 py-20"
+        >
+          <p>No loans available at the moment.</p>
+        </motion.div>
       ) : (
-        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
-          {loans.map((loan) => (
-            <LoanCard key={loan._id} loan={loan} />
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
+          {loans.map((loan, index) => (
+            <motion.div
+              key={loan._id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.1 }}
+            >
+              <LoanCard loan={loan} />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       )}
     </div>
   );

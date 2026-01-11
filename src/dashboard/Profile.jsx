@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { AuthContext } from "../providers/AuthProvider";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import LoadingSpinner from "../components/LoadingSpinner";
@@ -31,23 +32,68 @@ const Profile = () => {
   if (loading) return <LoadingSpinner />;
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-8">
+    <motion.div 
+      className="max-w-4xl mx-auto p-6 space-y-8"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       {/* Header Card */}
-      <div className="bg-gradient-to-r from-indigo-100 via-purple-100 to-pink-100 dark:from-indigo-900 dark:via-purple-800 dark:to-pink-900 
-                      text-gray-900 dark:text-white rounded-3xl p-10 shadow-xl flex flex-col items-center space-y-4 transition-colors duration-500">
-        <FaUserCircle className="text-8xl md:text-9xl" />
-        <h2 className="text-3xl md:text-4xl font-bold">{profile?.name || "N/A"}</h2>
-        <p className="opacity-80 text-lg">{profile?.role}</p>
-      </div>
+      <motion.div 
+        className="bg-gradient-to-r from-indigo-100 via-purple-100 to-pink-100 dark:from-indigo-900 dark:via-purple-800 dark:to-pink-900 
+                        text-gray-900 dark:text-white rounded-3xl p-10 shadow-xl flex flex-col items-center space-y-4 transition-colors duration-500"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+      >
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
+        >
+          <FaUserCircle className="text-8xl md:text-9xl" />
+        </motion.div>
+        <motion.h2 
+          className="text-3xl md:text-4xl font-bold"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          {profile?.name || "N/A"}
+        </motion.h2>
+        <motion.p 
+          className="opacity-80 text-lg"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          {profile?.role}
+        </motion.p>
+      </motion.div>
 
       {/* Account Details */}
-      <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-8 transition-colors duration-500">
-        <h3 className="text-2xl font-semibold border-b border-gray-300 dark:border-gray-700 pb-3 mb-6
-                       text-gray-900 dark:text-gray-200">
+      <motion.div 
+        className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-8 transition-colors duration-500"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6 }}
+      >
+        <motion.h3 
+          className="text-2xl font-semibold border-b border-gray-300 dark:border-gray-700 pb-3 mb-6
+                         text-gray-900 dark:text-gray-200"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 }}
+        >
           Account Details
-        </h3>
+        </motion.h3>
 
-        <div className="flex flex-col md:flex-row md:items-center md:gap-6 mb-4">
+        <motion.div 
+          className="flex flex-col md:flex-row md:items-center md:gap-6 mb-4"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.8 }}
+        >
           <div className="flex items-center gap-3 mb-3 md:mb-0">
             <FaEnvelope className="text-indigo-500 text-xl" />
             <span className="text-gray-900 dark:text-gray-200">{profile?.email}</span>
@@ -56,17 +102,22 @@ const Profile = () => {
             <FaUserTag className="text-purple-500 text-xl" />
             <span className="text-gray-900 dark:text-gray-200">{profile?.role}</span>
           </div>
-        </div>
+        </motion.div>
 
         {/* Optional extra info */}
         {profile?.phone && (
-          <div className="flex items-center gap-3 mt-4">
+          <motion.div 
+            className="flex items-center gap-3 mt-4"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.9 }}
+          >
             <FaUserTag className="text-green-500 text-xl" />
             <span className="text-gray-900 dark:text-gray-200">{profile.phone}</span>
-          </div>
+          </motion.div>
         )}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
