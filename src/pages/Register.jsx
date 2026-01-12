@@ -77,23 +77,7 @@ const Register = () => {
     }
   };
   
-  // Demo Registration
-  const handleDemoRegister = () => {
-    const demoForm = {
-      name: { value: "Demo User" },
-      email: { value: "demouser@example.com" },
-      role: { value: "borrower" },
-      password: { value: "Password123" },
-      photo: { value: "" },
-    };
-    
-    document.querySelector('[name="name"]').value = demoForm.name.value;
-    document.querySelector('[name="email"]').value = demoForm.email.value;
-    document.querySelector('[name="role"]').value = demoForm.role.value;
-    document.querySelector('[name="password"]').value = demoForm.password.value;
-    
-    toast.success("Demo credentials filled!");
-  };
+
 
   return (
     <div
@@ -250,13 +234,7 @@ const Register = () => {
           Continue with Google
         </button>
 
-        {/* Demo Registration */}
-        <button
-          onClick={handleDemoRegister}
-          className="btn btn-accent w-full py-3 mb-6 text-white"
-        >
-          Try Demo Registration
-        </button>
+
 
         <p className="text-center text-gray-600 dark:text-gray-400 mt-6">
           Already have an account?{" "}

@@ -73,7 +73,7 @@ const Home = () => {
   useEffect(() => {
     const fetchLoans = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL || "https://loanlink-server-seven.vercel.app"}/loans?limit=6`);
+        const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:3000"}/loans?limit=6`);
         if (!res.ok) throw new Error("Failed to fetch loans");
         const data = await res.json();
         setLoans(data);
@@ -100,9 +100,9 @@ const Home = () => {
       <section className="min-h-[85vh] flex items-center justify-center text-center bg-gradient-to-br from-indigo-200 via-purple-200 to-pink-200 dark:from-indigo-950 dark:via-purple-900 dark:to-pink-950 transition-colors duration-500 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop')] opacity-10 dark:opacity-5 bg-cover bg-center"></div>
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          initial={{ opacity: 0, y: 40, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           className="max-w-4xl px-4 relative z-10"
         >
           <motion.div
@@ -131,12 +131,22 @@ const Home = () => {
             transition={{ duration: 0.5, delay: 0.6 }}
             className="flex flex-col sm:flex-row justify-center gap-4"
           >
-            <Link to="/loans" className="btn btn-primary px-8 py-3 text-lg">
-              Explore Loans
-            </Link>
-            <Link to="/register" className="btn btn-outline px-8 py-3 text-lg">
-              Get Started
-            </Link>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Link to="/loans" className="btn btn-primary px-8 py-3 text-lg">
+                Explore Loans
+              </Link>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Link to="/register" className="btn btn-outline px-8 py-3 text-lg">
+                Get Started
+              </Link>
+            </motion.div>
           </motion.div>
         </motion.div>
       </section>
@@ -148,14 +158,22 @@ const Home = () => {
             {stats.map((stat, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
                 viewport={{ once: true }}
-                className="p-6"
+                whileHover={{ scale: 1.05 }}
+                className="p-6 bg-gradient-to-br from-primary/5 to-secondary/5 rounded-xl border border-primary/10"
               >
-                <div className="text-3xl md:text-4xl font-bold text-primary mb-2">{stat.value}</div>
-                <div className="text-gray-600 dark:text-gray-300">{stat.label}</div>
+                <motion.div
+                  className="text-3xl md:text-4xl font-bold text-primary mb-2"
+                  initial={{ scale: 0.8 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: index * 0.1 + 0.3, type: "spring", stiffness: 200 }}
+                >
+                  {stat.value}
+                </motion.div>
+                <div className="text-gray-600 dark:text-gray-300 font-medium">{stat.label}</div>
               </motion.div>
             ))}
           </div>
@@ -163,7 +181,7 @@ const Home = () => {
       </section>
 
       {/* ================= SERVICES SECTION ================= */}
-      <section className="py-20 bg-base-100 dark:bg-gray-900">
+      <section className="py-20 bg-gradient-to-br from-base-100 to-base-200 dark:from-gray-900 dark:to-gray-800">
         <div className="max-w-7xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -172,7 +190,7 @@ const Home = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Loan Services</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800 dark:text-white">Our Loan Services</h2>
             <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
               We offer a wide range of loan products tailored to meet your specific financial needs.
             </p>
@@ -182,16 +200,22 @@ const Home = () => {
             {services.map((service, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -10 }}
+                whileHover={{ y: -15, scale: 1.03 }}
                 viewport={{ once: true }}
-                className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all duration-300"
+                className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-all duration-300 group"
               >
-                <div className="text-4xl mb-4">{service.icon}</div>
-                <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
-                <p className="text-gray-600 dark:text-gray-300">{service.description}</p>
+                <motion.div 
+                  className="text-4xl mb-4 flex justify-center"
+                  whileHover={{ rotate: 10, scale: 1.1 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
+                  {service.icon}
+                </motion.div>
+                <h3 className="text-xl font-semibold mb-3 text-center text-gray-800 dark:text-white group-hover:text-primary transition-colors duration-300">{service.title}</h3>
+                <p className="text-gray-600 dark:text-gray-300 text-center">{service.description}</p>
               </motion.div>
             ))}
           </div>
@@ -218,19 +242,25 @@ const Home = () => {
           {loans.map((loan, index) => (
             <motion.div
               key={loan._id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
               viewport={{ once: true }}
+              whileHover={{ y: -5, scale: 1.02 }}
             >
               <LoanCard loan={loan} />
             </motion.div>
           ))}
         </div>
         <div className="text-center mt-8">
-          <Link to="/loans" className="btn btn-primary">
-            View All Loans
-          </Link>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Link to="/loans" className="btn btn-primary">
+              View All Loans
+            </Link>
+          </motion.div>
         </div>
       </section>
 
@@ -294,7 +324,7 @@ const Home = () => {
       </section>
 
       {/* ================= WHY LOANLINK IS DIFFERENT ================= */}
-      <section className="py-20 bg-gradient-to-br from-primary/5 to-secondary/5 dark:from-primary/10 dark:to-secondary/10">
+      <section className="py-20 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         <div className="max-w-7xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -303,7 +333,7 @@ const Home = () => {
             viewport={{ once: true }}
             className="text-center mb-14"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800 dark:text-gray-100">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800 dark:text-white">
               Why LoanLink Is Different
             </h2>
             <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
@@ -332,19 +362,26 @@ const Home = () => {
             ].map((item, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                whileHover={{ y: -5 }}
+                whileHover={{ y: -15, scale: 1.05, rotateY: 5 }}
                 viewport={{ once: true }}
-                className="rounded-2xl p-6 bg-white dark:bg-gray-800
+                className="rounded-2xl p-6 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-700
           border border-gray-200 dark:border-gray-700
-          shadow-sm hover:shadow-lg transition-all duration-300"
+          shadow-lg hover:shadow-2xl transition-all duration-300 group"
               >
-                <h3 className="text-lg font-semibold mb-3 text-gray-800 dark:text-gray-100">
+                <motion.div
+                  className="w-14 h-14 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center mb-4 mx-auto group-hover:bg-primary/20 dark:group-hover:bg-primary/30 transition-colors duration-300"
+                  whileHover={{ scale: 1.1, rotate: 10 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                >
+                  <div className="text-2xl font-bold text-primary group-hover:text-secondary transition-colors duration-300">{i + 1}</div>
+                </motion.div>
+                <h3 className="text-lg font-semibold mb-3 text-center text-gray-800 dark:text-white group-hover:text-primary transition-colors duration-300">
                   {item.title}
                 </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed text-center">
                   {item.desc}
                 </p>
               </motion.div>
@@ -411,7 +448,7 @@ const Home = () => {
       </section>
 
       {/* ================= FAQ SECTION ================= */}
-      <section className="py-20 bg-base-100 dark:bg-gray-900">
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
         <div className="max-w-4xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -420,7 +457,7 @@ const Home = () => {
             viewport={{ once: true }}
             className="text-center mb-14"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800 dark:text-white">
               Frequently Asked Questions
             </h2>
             <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
@@ -429,33 +466,51 @@ const Home = () => {
           </motion.div>
           
           <div className="space-y-4">
-            <div className="collapse collapse-plus bg-base-200">
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="collapse collapse-plus bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden"
+            >
               <input type="radio" name="my-accordion-3" defaultChecked />
-              <div className="collapse-title text-xl font-medium">
+              <div className="collapse-title text-xl font-medium text-gray-800 dark:text-white bg-gray-50 dark:bg-gray-700/50 hover:bg-primary/10 dark:hover:bg-primary/20 transition-colors duration-300">
                 What documents do I need to apply for a loan?
               </div>
-              <div className="collapse-content">
+              <div className="collapse-content bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 p-4">
                 <p>Typically, you'll need proof of identity (NID), income proof (salary slip/bank statement), address proof, and employment verification. Specific requirements may vary based on loan type.</p>
               </div>
-            </div>
-            <div className="collapse collapse-plus bg-base-200">
+            </motion.div>
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="collapse collapse-plus bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden"
+            >
               <input type="radio" name="my-accordion-3" />
-              <div className="collapse-title text-xl font-medium">
+              <div className="collapse-title text-xl font-medium text-gray-800 dark:text-white bg-gray-50 dark:bg-gray-700/50 hover:bg-primary/10 dark:hover:bg-primary/20 transition-colors duration-300">
                 How long does the loan approval process take?
               </div>
-              <div className="collapse-content">
+              <div className="collapse-content bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 p-4">
                 <p>Our standard loan approval process takes 24-48 hours after submission of all required documents. For urgent cases, we offer express approval within 12 hours.</p>
               </div>
-            </div>
-            <div className="collapse collapse-plus bg-base-200">
+            </motion.div>
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4, delay: 0.3 }}
+              viewport={{ once: true }}
+              className="collapse collapse-plus bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden"
+            >
               <input type="radio" name="my-accordion-3" />
-              <div className="collapse-title text-xl font-medium">
+              <div className="collapse-title text-xl font-medium text-gray-800 dark:text-white bg-gray-50 dark:bg-gray-700/50 hover:bg-primary/10 dark:hover:bg-primary/20 transition-colors duration-300">
                 What is the minimum credit score required?
               </div>
-              <div className="collapse-content">
+              <div className="collapse-content bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 p-4">
                 <p>We accept applications with credit scores as low as 550. However, higher scores may qualify for better interest rates and loan terms.</p>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -476,18 +531,28 @@ const Home = () => {
               Join thousands of satisfied customers who have achieved their financial goals with LoanLink.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link
-                to="/register"
-                className="btn btn-outline text-white border-white px-8 py-3 text-lg"
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                Create Free Account
-              </Link>
-              <Link
-                to="/loans"
-                className="btn bg-white text-primary hover:bg-gray-100 px-8 py-3 text-lg"
+                <Link
+                  to="/register"
+                  className="btn btn-outline text-white border-white px-8 py-3 text-lg"
+                >
+                  Create Free Account
+                </Link>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                Explore Loans
-              </Link>
+                <Link
+                  to="/loans"
+                  className="btn bg-white text-primary hover:bg-gray-100 px-8 py-3 text-lg"
+                >
+                  Explore Loans
+                </Link>
+              </motion.div>
             </div>
           </motion.div>
         </div>

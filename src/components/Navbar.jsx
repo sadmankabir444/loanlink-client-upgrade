@@ -1,6 +1,5 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { AuthContext } from "../providers/AuthProvider";
 import { CiSun, CiDark } from "react-icons/ci";
 import { IoMdClose, IoMdMenu } from "react-icons/io";
@@ -39,7 +38,7 @@ const Navbar = () => {
 
   const navLinks = (
     <>
-      <motion.li whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+      <li>
         <NavLink
           to="/"
           className={({ isActive }) => (isActive ? activeClass : normalClass)}
@@ -47,9 +46,9 @@ const Navbar = () => {
         >
           Home
         </NavLink>
-      </motion.li>
+      </li>
 
-      <motion.li whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+      <li>
         <NavLink
           to="/loans"
           className={({ isActive }) => (isActive ? activeClass : normalClass)}
@@ -57,9 +56,9 @@ const Navbar = () => {
         >
           All Loans
         </NavLink>
-      </motion.li>
+      </li>
 
-      <motion.li whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+      <li>
         <NavLink
           to="/about"
           className={({ isActive }) => (isActive ? activeClass : normalClass)}
@@ -67,11 +66,11 @@ const Navbar = () => {
         >
           About
         </NavLink>
-      </motion.li>
+      </li>
 
       {!user ? (
         <>
-          <motion.li whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          <li>
             <NavLink
               to="/login"
               className={({ isActive }) =>
@@ -81,9 +80,9 @@ const Navbar = () => {
             >
               Login
             </NavLink>
-          </motion.li>
+          </li>
 
-          <motion.li whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          <li>
             <NavLink
               to="/register"
               className={({ isActive }) =>
@@ -93,81 +92,19 @@ const Navbar = () => {
             >
               Register
             </NavLink>
-          </motion.li>
+          </li>
         </>
       ) : (
         <>
-          <motion.li whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="dropdown dropdown-end">
-            <label tabIndex={0} className="flex items-center gap-2 cursor-pointer">
-              <div className="avatar">
-                <div className="w-10 h-10 rounded-full border-2 border-primary overflow-hidden">
-                  <img 
-                    src={user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName || user.email}&background=random`} 
-                    alt={user.displayName || "User"} 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
-              <span className="hidden md:inline">{user.displayName || user.email.substring(0, 10)}</span>
-            </label>
-            <ul tabIndex={0} className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-              <motion.li whileHover={{ backgroundColor: "rgba(0,0,0,0.1)" }}>
-                <NavLink to="/dashboard" className="flex items-center gap-2">
-                  <FaTachometerAlt /> Dashboard
-                </NavLink>
-              </motion.li>
-              <motion.li whileHover={{ backgroundColor: "rgba(0,0,0,0.1)" }}>
-                <NavLink to="/dashboard/profile" className="flex items-center gap-2">
-                  <FaUser /> Profile
-                </NavLink>
-              </motion.li>
-              {user?.role === 'borrower' && (
-                <motion.li whileHover={{ backgroundColor: "rgba(0,0,0,0.1)" }}>
-                  <NavLink to="/dashboard/my-loans" className="flex items-center gap-2">
-                    <FaMoneyBillWave /> My Loans
-                  </NavLink>
-                </motion.li>
-              )}
-              {user?.role === 'manager' && (
-                <>
-                  <motion.li whileHover={{ backgroundColor: "rgba(0,0,0,0.1)" }}>
-                    <NavLink to="/dashboard/add-loan" className="flex items-center gap-2">
-                      <FaMoneyBillWave /> Add Loan
-                    </NavLink>
-                  </motion.li>
-                  <motion.li whileHover={{ backgroundColor: "rgba(0,0,0,0.1)" }}>
-                    <NavLink to="/dashboard/manage-loans" className="flex items-center gap-2">
-                      <FaList /> Manage Loans
-                    </NavLink>
-                  </motion.li>
-                </>
-              )}
-              {user?.role === 'admin' && (
-                <>
-                  <motion.li whileHover={{ backgroundColor: "rgba(0,0,0,0.1)" }}>
-                    <NavLink to="/dashboard/all-loans" className="flex items-center gap-2">
-                      <FaList /> All Loans
-                    </NavLink>
-                  </motion.li>
-                  <motion.li whileHover={{ backgroundColor: "rgba(0,0,0,0.1)" }}>
-                    <NavLink to="/dashboard/applications" className="flex items-center gap-2">
-                      <FaList /> Applications
-                    </NavLink>
-                  </motion.li>
-                  <motion.li whileHover={{ backgroundColor: "rgba(0,0,0,0.1)" }}>
-                    <NavLink to="/dashboard/manage-users" className="flex items-center gap-2">
-                      <FaCog /> Manage Users
-                    </NavLink>
-                  </motion.li>
-                </>
-              )}
-              <motion.li whileHover={{ backgroundColor: "rgba(0,0,0,0.1)" }}>
-                <button onClick={handleLogout} className="flex items-center gap-2 text-red-500">
-                  <FaSignOutAlt /> Logout
-                </button>
-              </motion.li>
-            </ul>
-          </motion.li>
+          <li>
+            <NavLink
+              to="/dashboard"
+              className={({ isActive }) => (isActive ? activeClass : normalClass)}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Dashboard
+            </NavLink>
+          </li>
         </>
       )}
     </>
@@ -209,6 +146,83 @@ const Navbar = () => {
           </span>
         </button>
 
+        {/* Desktop User Menu */}
+        {user && (
+          <div className="hidden lg:flex items-center gap-3">
+            <div className="dropdown dropdown-end">
+              <label tabIndex={0} className="flex items-center gap-2 cursor-pointer">
+                <div className="avatar">
+                  <div className="w-10 h-10 rounded-full border-2 border-primary overflow-hidden">
+                    <img 
+                      src={user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName || user.email}&background=random`} 
+                      alt={user.displayName || "User"} 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+                <span className="hidden md:inline">{user.displayName || user.email.substring(0, 10)}</span>
+              </label>
+              <ul tabIndex={0} className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+                <li>
+                  <NavLink to="/dashboard" className="flex items-center gap-2">
+                    <FaTachometerAlt /> Dashboard
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/dashboard/profile" className="flex items-center gap-2">
+                    <FaUser /> Profile
+                  </NavLink>
+                </li>
+                {user?.role === 'borrower' && (
+                  <li>
+                    <NavLink to="/dashboard/my-loans" className="flex items-center gap-2">
+                      <FaMoneyBillWave /> My Loans
+                    </NavLink>
+                  </li>
+                )}
+                {user?.role === 'manager' && (
+                  <>
+                    <li>
+                      <NavLink to="/dashboard/add-loan" className="flex items-center gap-2">
+                        <FaMoneyBillWave /> Add Loan
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink to="/dashboard/manage-loans" className="flex items-center gap-2">
+                        <FaList /> Manage Loans
+                      </NavLink>
+                    </li>
+                  </>
+                )}
+                {user?.role === 'admin' && (
+                  <>
+                    <li>
+                      <NavLink to="/dashboard/all-loans" className="flex items-center gap-2">
+                        <FaList /> All Loans
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink to="/dashboard/applications" className="flex items-center gap-2">
+                        <FaList /> Applications
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink to="/dashboard/manage-users" className="flex items-center gap-2">
+                        <FaCog /> Manage Users
+                      </NavLink>
+                    </li>
+                  </>
+                )}
+                <li>
+                  <button onClick={handleLogout} className="flex items-center gap-2 text-red-500">
+                    <FaSignOutAlt /> Logout
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        )}
+
         {/* Mobile Menu Button */}
         <div className="lg:hidden">
           <button 
@@ -221,21 +235,11 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu Dropdown */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div 
-            className="lg:hidden absolute top-full left-0 right-0 bg-base-100 shadow-lg z-50"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            <ul className="menu p-4 gap-2">
-              {navLinks}
-            </ul>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div className={`lg:hidden absolute top-full left-0 right-0 bg-base-100 shadow-lg z-50 ${mobileMenuOpen ? '' : 'hidden'}`}>
+        <ul className="menu p-4 gap-2">
+          {navLinks}
+        </ul>
+      </div>
     </nav>
   );
 };

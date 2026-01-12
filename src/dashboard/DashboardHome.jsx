@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { motion } from "framer-motion";
 import { AuthContext } from "../providers/AuthProvider";
 import { FaHome, FaInfoCircle, FaChartBar, FaDollarSign, FaUsers, FaFileAlt } from "react-icons/fa";
 import {
@@ -44,37 +45,56 @@ const DashboardHome = () => {
   ];
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6 bg-gradient-to-br from-base-100 to-base-200 min-h-screen">
       {/* Welcome Card */}
-      <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white rounded-2xl p-8 shadow-lg transform transition-transform hover:scale-105 duration-300">
+      <motion.div 
+        className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white rounded-2xl p-8 shadow-xl"
+        initial={{ opacity: 0, y: -30, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        whileHover={{ scale: 1.02 }}
+      >
         <h2 className="text-3xl font-extrabold">Welcome, {user?.displayName || "User"}!</h2>
         <p className="mt-2 opacity-80">
           Use the sidebar to navigate through your dashboard.
         </p>
-      </div>
+      </motion.div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, index) => (
-          <div key={index} className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 hover:shadow-xl transition-shadow duration-300">
+          <motion.div 
+            key={index}
+            className="bg-gradient-to-br from-base-100 to-base-200 rounded-2xl shadow-lg border border-primary/10 p-6"
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
+            whileHover={{ y: -8, scale: 1.03 }}
+          >
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-600 dark:text-gray-300 text-sm">{stat.title}</p>
                 <p className="text-2xl font-bold mt-1">{stat.value}</p>
               </div>
-              <div className={`${stat.color} p-3 rounded-full text-white`}>
+              <div className={`${stat.color} p-3 rounded-full text-white shadow-md`}>
                 {stat.icon}
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
 
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Bar Chart */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-          <h3 className="text-xl font-semibold mb-4">Loan Applications & Approvals</h3>
+        <motion.div 
+          className="bg-gradient-to-br from-base-100 to-base-200 rounded-2xl shadow-lg border border-primary/10 p-6"
+          initial={{ opacity: 0, x: -30, scale: 0.95 }}
+          animate={{ opacity: 1, x: 0, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
+          whileHover={{ scale: 1.01 }}
+        >
+          <h3 className="text-xl font-semibold mb-4 text-primary">Loan Applications & Approvals</h3>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
@@ -91,11 +111,17 @@ const DashboardHome = () => {
               </BarChart>
             </ResponsiveContainer>
           </div>
-        </div>
+        </motion.div>
 
         {/* Pie Chart */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-          <h3 className="text-xl font-semibold mb-4">Application Status Distribution</h3>
+        <motion.div 
+          className="bg-gradient-to-br from-base-100 to-base-200 rounded-2xl shadow-lg border border-primary/10 p-6"
+          initial={{ opacity: 0, x: 30, scale: 0.95 }}
+          animate={{ opacity: 1, x: 0, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.5, ease: "easeOut" }}
+          whileHover={{ scale: 1.01 }}
+        >
+          <h3 className="text-xl font-semibold mb-4 text-primary">Application Status Distribution</h3>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -118,12 +144,18 @@ const DashboardHome = () => {
               </PieChart>
             </ResponsiveContainer>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Info / Tips Card */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 hover:shadow-xl transition-shadow duration-300">
-        <h3 className="text-2xl font-semibold mb-3 flex items-center gap-2">
+      <motion.div 
+        className="bg-gradient-to-br from-base-100 to-base-200 rounded-2xl shadow-lg border border-primary/10 p-6"
+        initial={{ opacity: 0, y: 30, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
+        whileHover={{ y: -5, scale: 1.02 }}
+      >
+        <h3 className="text-2xl font-semibold mb-3 flex items-center gap-2 text-primary">
           <FaInfoCircle /> Dashboard Overview
         </h3>
         <p className="text-gray-700 dark:text-gray-300">
@@ -141,7 +173,7 @@ const DashboardHome = () => {
             As an admin, you have full access to user management and all loan operations.
           </p>
         )}
-      </div>
+      </motion.div>
     </div>
   );
 };

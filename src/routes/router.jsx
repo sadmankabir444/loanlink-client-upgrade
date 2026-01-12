@@ -13,6 +13,7 @@ import LoanDetails from "../pages/LoanDetails";
 import ApplyLoan from "../pages/ApplyLoan";
 import ErrorPage from "../pages/ErrorPage";
 import About from "../pages/About";
+import ForgotPassword from "../pages/ForgotPassword";
 
 /* Dashboard Pages */
 import MyLoans from "../dashboard/MyLoans";
@@ -41,6 +42,7 @@ const router = createBrowserRouter([
       { path: "loans", element: <AllLoans /> },
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
+      { path: "forgot-password", element: <ForgotPassword /> },
       { path: "about", element: <About /> },
 
       // ---------- AUTH ----------

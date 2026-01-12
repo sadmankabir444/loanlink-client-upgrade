@@ -5,7 +5,7 @@ const About = () => {
     {
       name: "Sarah Johnson",
       role: "CEO & Founder",
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5cd?auto=format&fit=crop&w=200&h=200",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnvTbL5WSUuKYddpZI-SXU6JbudFjCtFCGuw&s",
       bio: "With over 10 years of experience in fintech, Sarah founded LoanLink to make financial services accessible to everyone."
     },
     {

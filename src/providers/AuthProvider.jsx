@@ -13,7 +13,7 @@ import app from "../firebase/firebase.config";
 import axios from "axios";
 
 // Use the same API URL as configured in axiosSecure
-const API_BASE_URL = import.meta.env.VITE_API_URL || "https://loanlink-server-seven.vercel.app";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 export const AuthContext = createContext(null);
 

@@ -33,7 +33,7 @@ const Profile = () => {
 
   return (
     <motion.div 
-      className="max-w-4xl mx-auto p-6 space-y-8"
+      className="max-w-4xl mx-auto p-6 space-y-8 bg-gradient-to-br from-base-100 to-base-200 min-h-screen py-8"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}

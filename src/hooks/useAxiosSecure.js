@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 // Axios instance
 const axiosSecure = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "https://loanlink-server-seven.vercel.app",
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000",
   withCredentials: true, 
 });
 

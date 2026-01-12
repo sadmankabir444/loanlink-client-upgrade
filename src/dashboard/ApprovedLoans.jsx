@@ -17,6 +17,7 @@ const ApprovedLoans = () => {
       const res = await axiosSecure.get("/manager/approved");
       setApps(res.data);
     } catch (error) {
+      console.error(error);
       Swal.fire("Error", "Failed to fetch approved applications", "error");
     } finally {
       setLoading(false);
@@ -59,54 +60,61 @@ const ApprovedLoans = () => {
   if (loading) return <LoadingSpinner />;
 
   return (
-    <div className="p-4">
+    <div className="p-4 bg-gradient-to-br from-base-100 to-base-200 min-h-screen">
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-        <h2 className="text-3xl font-bold text-primary">
+        <h2 className="text-3xl font-bold text-primary mb-4 md:mb-0">
           Approved Loan Applications
         </h2>
 
         <input
           type="text"
           placeholder="Search by title, category, or user"
-          className="input input-bordered mt-3 md:mt-0"
+          className="input input-bordered w-full max-w-xs"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="table table-zebra w-full">
-          <thead className="bg-base-200">
+      {/* Desktop Table View */}
+      <div className="hidden lg:block overflow-x-auto rounded-xl">
+        <table className="table w-full">
+          <thead className="bg-gradient-to-r from-primary to-secondary text-white">
             <tr>
-              <th>Loan ID</th>
-              <th>User</th>
-              <th>Loan Title</th>
-              <th>Amount</th>
-              <th>Approved Date</th>
-              <th className="text-center">Actions</th>
+              <th className="px-4 py-3">Loan ID</th>
+              <th className="px-4 py-3">User</th>
+              <th className="px-4 py-3">Loan Title</th>
+              <th className="px-4 py-3">Amount</th>
+              <th className="px-4 py-3">Approved Date</th>
+              <th className="px-4 py-3 text-center">Actions</th>
             </tr>
           </thead>
 
           <tbody>
             {filteredApps.length === 0 && (
               <tr>
-                <td colSpan="6" className="text-center py-6">
-                  No approved applications found
+                <td colSpan="6" className="text-center py-10">
+                  <div className="flex flex-col items-center justify-center text-gray-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    <p className="text-lg">No approved applications found</p>
+                    <p className="text-sm mt-1">There are currently no approved applications</p>
+                  </div>
                 </td>
               </tr>
             )}
 
             {filteredApps.map((app) => (
-              <tr key={app._id}>
-                <td>{app._id.slice(0, 6)}...</td>
-                <td>
+              <tr key={app._id} className="hover:bg-base-200 border-b border-base-200">
+                <td className="px-4 py-3">{app._id.slice(0, 6)}...</td>
+                <td className="px-4 py-3">
                   <p className="font-semibold">{app.userName}</p>
                   <p className="text-sm opacity-70">{app.userEmail}</p>
                 </td>
-                <td>{app.loanTitle}</td>
-                <td>${app.loanAmount}</td>
-                <td>{new Date(app.approvedAt).toLocaleDateString()}</td>
-                <td className="text-center">
+                <td className="px-4 py-3">{app.loanTitle}</td>
+                <td className="px-4 py-3">${app.loanAmount}</td>
+                <td className="px-4 py-3">{new Date(app.approvedAt).toLocaleDateString()}</td>
+                <td className="px-4 py-3 text-center">
                   <button
                     className="btn btn-xs btn-info"
                     onClick={() => handleView(app)}
@@ -118,6 +126,52 @@ const ApprovedLoans = () => {
             ))}
           </tbody>
         </table>
+      </div>
+      
+      {/* Mobile Card View */}
+      <div className="lg:hidden space-y-4">
+        {filteredApps.length === 0 && (
+          <div className="text-center py-10">
+            <div className="flex flex-col items-center justify-center text-gray-500">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              <p className="text-lg">No approved applications found</p>
+              <p className="text-sm mt-1">There are currently no approved applications</p>
+            </div>
+          </div>
+        )}
+        
+        {filteredApps.map((app) => (
+          <div key={app._id} className="card bg-base-100 border border-base-300 rounded-xl shadow-md p-4">
+            <div className="flex flex-col gap-2">
+              <div className="flex justify-between">
+                <div>
+                  <p className="font-semibold">{app.loanTitle}</p>
+                  <p className="text-sm opacity-70">ID: {app._id.slice(0, 6)}...</p>
+                </div>
+                <div className="text-right">
+                  <p className="font-bold text-lg">${app.loanAmount}</p>
+                  <p className="text-sm">{new Date(app.approvedAt).toLocaleDateString()}</p>
+                </div>
+              </div>
+              
+              <div className="mt-2">
+                <p className="font-medium">{app.userName}</p>
+                <p className="text-sm opacity-70">{app.userEmail}</p>
+              </div>
+            </div>
+            
+            <div className="flex gap-2 mt-4">
+              <button
+                className="btn btn-sm btn-info flex-1"
+                onClick={() => handleView(app)}
+              >
+                View
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

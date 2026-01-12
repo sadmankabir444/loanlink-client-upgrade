@@ -89,11 +89,27 @@ export default function Login() {
     }
   };
   
-  // Demo Login
-  const handleDemoLogin = () => {
-    setEmail("demo@example.com");
-    setPassword("Password123");
-    toast.success("Demo credentials filled!");
+  // Manager Login
+  const handleManagerLogin = async () => {
+    try {
+      setLoading(true);
+      const result = await login("manager@loanlink.com", "Manager@123");
+      const user = result.user;
+
+      try {
+        await axiosSecure.post("/login", { email: user.email });
+      } catch (err) {
+        console.error("Backend login failed", err);
+      }
+
+      toast.success("Manager login successful 🎉");
+      navigate(from, { replace: true });
+    } catch (err) {
+      console.error(err);
+      toast.error("Manager login failed ❌");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -166,7 +182,7 @@ export default function Login() {
               <input type="checkbox" className="checkbox checkbox-primary" />
               <span className="label-text ml-2 text-gray-700 dark:text-gray-300">Remember me</span>
             </label>
-            <Link to="#" className="text-sm text-primary hover:underline">
+            <Link to="/forgot-password" className="text-sm text-primary hover:underline">
               Forgot password?
             </Link>
           </div>
@@ -192,12 +208,13 @@ export default function Login() {
           {loading ? "Processing..." : "Sign in with Google"}
         </button>
 
-        {/* Demo Login */}
+        {/* Manager Login */}
         <button
-          onClick={handleDemoLogin}
-          className="btn btn-accent w-full py-3 mb-6 text-white"
+          onClick={handleManagerLogin}
+          className={`btn btn-accent w-full py-3 mb-6 text-white ${loading ? "loading" : ""}`}
+          disabled={loading}
         >
-          Try Demo Account
+          {loading ? "Logging in..." : "Try Manager Account"}
         </button>
 
         <p className="text-center text-gray-600 dark:text-gray-400 mt-6">

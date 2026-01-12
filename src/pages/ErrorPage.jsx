@@ -61,14 +61,14 @@ const ErrorPage = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.8 }}
         >
-          <motion.Link
-            to="/"
+          <motion.a
+            href="/"
             className="px-6 py-3 rounded-xl font-medium bg-orange-500 text-white hover:bg-orange-600 transition"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             Go Home
-          </motion.Link>
+          </motion.a>
 
           <motion.button
             onClick={() => window.location.reload()}
