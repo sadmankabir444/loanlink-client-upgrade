@@ -47,11 +47,20 @@ const router = createBrowserRouter([
 
       // ---------- AUTH ----------
       {
-        element: <PrivateRoute />,
-        children: [
-          { path: "loans/:id", element: <LoanDetails /> },
-          { path: "apply-loan/:id", element: <ApplyLoan /> },
-        ],
+        path: "loans/:id",
+        element: (
+          <PrivateRoute>
+            <LoanDetails />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "apply-loan/:id",
+        element: (
+          <PrivateRoute>
+            <ApplyLoan />
+          </PrivateRoute>
+        ),
       },
 
       // ---------- DASHBOARD ----------
@@ -64,10 +73,10 @@ const router = createBrowserRouter([
         ),
         children: [
           // default dashboard page
-           {
-      index: true,
-      element: <DashboardHome />,
-    },
+          {
+            index: true,
+            element: <DashboardHome />
+          },
 
           // Borrower
           {
