@@ -73,7 +73,7 @@ const Home = () => {
   useEffect(() => {
     const fetchLoans = async () => {
       try {
-        const res = await fetch("http://localhost:3000/loans?limit=6");
+        const res = await fetch(`${import.meta.env.VITE_API_URL || "https://loanlink-server-seven.vercel.app"}/loans?limit=6`);
         if (!res.ok) throw new Error("Failed to fetch loans");
         const data = await res.json();
         setLoans(data);

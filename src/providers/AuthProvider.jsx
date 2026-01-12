@@ -12,6 +12,9 @@ import {
 import app from "../firebase/firebase.config";
 import axios from "axios";
 
+// Use the same API URL as configured in axiosSecure
+const API_BASE_URL = import.meta.env.VITE_API_URL || "https://loanlink-server-seven.vercel.app";
+
 export const AuthContext = createContext(null);
 
 const auth = getAuth(app);
@@ -30,7 +33,7 @@ const AuthProvider = ({ children }) => {
 
       // Save user to backend with name, email, role
       try {
-        await axios.post("http://localhost:3000/users", {
+        await axios.post(`${API_BASE_URL}/users`, {
           name,       // <-- important: save name
           email,
           role: "borrower",
@@ -54,7 +57,7 @@ const AuthProvider = ({ children }) => {
       
       try {
         const res = await axios.post(
-  "http://localhost:3000/login",
+  `${API_BASE_URL}/login`,
   { email, password },
   { withCredentials: true }
 );
@@ -83,7 +86,7 @@ if (res.data?.token) {
 
       // Save Google user to backend
       try {
-        await axios.post("http://localhost:3000/users", {
+        await axios.post(`${API_BASE_URL}/users`, {
           name: gUser.displayName,
           email: gUser.email,
           photo: gUser.photoURL,
@@ -119,7 +122,7 @@ if (res.data?.token) {
       if (currentUser) {
         try {
           const res = await axios.get(
-            `http://localhost:3000/users/${currentUser.email}`
+            `${API_BASE_URL}/users/${currentUser.email}`
           );
           setUser({ ...currentUser, role: res.data?.role || "borrower" });
         } catch (err) {
