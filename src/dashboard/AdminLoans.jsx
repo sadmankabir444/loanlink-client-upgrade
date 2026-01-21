@@ -6,7 +6,7 @@ const AdminLoans = () => {
   const [loans, setLoans] = useState([]);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL || "https://loanlink-server-seven.vercel.app"}/loans`)
+    fetch(`${import.meta.env.VITE_API_URL || "https://loanlink-server-upgrade.vercel.app"}/loans`)
       .then((res) => res.json())
       .then((data) => setLoans(data));
   }, []);
@@ -31,7 +31,7 @@ const AdminLoans = () => {
       buttonsStyling: false,
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`${import.meta.env.VITE_API_URL || "https://loanlink-server-seven.vercel.app"}/loans/${id}`, { method: "DELETE" })
+        fetch(`${import.meta.env.VITE_API_URL || "https://loanlink-server-upgrade.vercel.app"}/loans/${id}`, { method: "DELETE" })
           .then(() => {
             toast.success("Loan deleted successfully");
             setLoans(loans.filter((l) => l._id !== id));

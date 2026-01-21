@@ -124,10 +124,18 @@ if (res.data?.token) {
           const res = await axios.get(
             `${API_BASE_URL}/users/${currentUser.email}`
           );
-          setUser({ ...currentUser, role: res.data?.role || "borrower" });
+          setUser({ 
+            ...currentUser, 
+            role: res.data?.role || "borrower",
+            photoURL: res.data?.photoURL || currentUser.photoURL || null
+          });
         } catch (err) {
           console.error("Failed to fetch role", err);
-          setUser({ ...currentUser, role: "borrower" });
+          setUser({ 
+            ...currentUser, 
+            role: "borrower",
+            photoURL: currentUser.photoURL || null
+          });
         }
       } else {
         setUser(null);

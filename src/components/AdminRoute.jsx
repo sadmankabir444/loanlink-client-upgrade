@@ -7,7 +7,7 @@ const AdminRoute = ({ children }) => {
   const [role, setRole] = useState("");
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL || "https://loanlink-server-seven.vercel.app"}/users/${user.email}`)
+    fetch(`${import.meta.env.VITE_API_URL || "https://loanlink-server-upgrade.vercel.app"}/users/${user.email}`)
       .then(res => res.json())
       .then(data => setRole(data.role));
   }, [user]);

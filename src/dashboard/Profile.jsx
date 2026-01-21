@@ -3,11 +3,11 @@ import { motion } from "framer-motion";
 import { AuthContext } from "../providers/AuthProvider";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import LoadingSpinner from "../components/LoadingSpinner";
-import { FaUserCircle, FaEnvelope, FaUserTag } from "react-icons/fa";
+import { FaUserCircle, FaEnvelope, FaUserTag, FaCamera } from "react-icons/fa";
 
 
 const Profile = () => {
-  const { user } = useContext(AuthContext);
+  const { user, updateUserProfile } = useContext(AuthContext);
   const axiosSecure = useAxiosSecure();
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -31,6 +31,22 @@ const Profile = () => {
 
   if (loading) return <LoadingSpinner />;
 
+  const updateFirebaseProfile = async (name, photoUrl) => {
+    try {
+      // Update Firebase profile
+      await updateUserProfile(name, photoUrl);
+      
+      // Update backend profile
+      await axiosSecure.patch('/users/profile', { name, photoURL: photoUrl });
+      
+      // Refresh the profile data to update the UI
+      const res = await axiosSecure.get(`/users/${user.email}`);
+      setProfile(res.data);
+    } catch (error) {
+      console.error('Error updating profile:', error);
+    }
+  };
+
   return (
     <motion.div 
       className="max-w-4xl mx-auto p-6 space-y-8 bg-gradient-to-br from-base-100 to-base-200 min-h-screen py-8"
@@ -51,7 +67,17 @@ const Profile = () => {
           animate={{ scale: 1 }}
           transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
         >
-          <FaUserCircle className="text-8xl md:text-9xl" />
+          {profile?.photoURL || user?.photoURL ? (
+            <img 
+              src={profile.photoURL || user.photoURL} 
+              alt={profile?.name || "User"} 
+              className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-white shadow-lg"
+            />
+          ) : (
+            <div className="w-32 h-32 md:w-40 md:h-40 rounded-full bg-gradient-to-br from-indigo-200 to-purple-300 flex items-center justify-center border-4 border-white shadow-lg">
+              <FaUserCircle className="text-6xl md:text-7xl text-indigo-600" />
+            </div>
+          )}
         </motion.div>
         <motion.h2 
           className="text-3xl md:text-4xl font-bold"
@@ -69,6 +95,30 @@ const Profile = () => {
         >
           {profile?.role}
         </motion.p>
+        
+        {/* Update Profile Image */}
+        <div className="mt-6">
+          <label className="btn btn-outline btn-sm">
+            <input 
+              type="file" 
+              accept="image/*" 
+              className="hidden" 
+              onChange={(e) => {
+                if (e.target.files && e.target.files[0]) {
+                  const file = e.target.files[0];
+                  const reader = new FileReader();
+                  
+                  reader.onloadend = () => {
+                    updateFirebaseProfile(profile?.name || user?.displayName, reader.result);
+                  };
+                  
+                  reader.readAsDataURL(file);
+                }
+              }}
+            />
+            <FaCamera className="mr-2" /> Change Photo
+          </label>
+        </div>
       </motion.div>
 
       {/* Account Details */}

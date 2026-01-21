@@ -14,7 +14,7 @@ const ApplyLoan = () => {
 
   // Fetch loan details
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL || "https://loanlink-server-seven.vercel.app"}/loans/${id}`)
+    fetch(`${import.meta.env.VITE_API_URL || "https://loanlink-server-upgrade.vercel.app"}/loans/${id}`)
       .then(res => res.json())
       .then(data => setLoan(data))
       .catch(err => toast.error("Failed to fetch loan details"));
@@ -49,7 +49,7 @@ const ApplyLoan = () => {
     };
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || "https://loanlink-server-seven.vercel.app"}/loan-applications`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || "https://loanlink-server-upgrade.vercel.app"}/loan-applications`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(application),
